@@ -8,7 +8,7 @@ const render = Render.create({
     engine: engine,
     options: {
         width: 800,
-        height: 600
+        height: 500
     }
 });
 Render.run(render);
