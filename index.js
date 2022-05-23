@@ -63,9 +63,23 @@ const Traversal = (Row,Col) =>{
         [Row-1,Col],
         [Row,Col-1],
     ]
+    let Neighbors2 = Shuffle_2([
+        [Row+1,Col],
+        [Row,Col+1],
+        [Row-1,Col],
+        [Row,Col-1],
+    ])
     
-    console.log(Neighbors)
-    console.log(Shuffle(Neighbors));
+    //for each neighbor
+    for(let neighbor of Neighbors2){
+        const [nextRow, nextColumn] = neighbor;
+        
+        if((nextColumn<0 || nextColumn >= CELLS) ||(nextRow<0     || nextColumn >= CELLS)){
+            continue;
+        }
+
+
+    }
 
 };
 
@@ -93,7 +107,17 @@ const Shuffle_2 = (array) =>{
     }
     return array;
 }
-
+Array.prototype.shuff =  (array)=>{
+    let size = array.length;
+    for(let i = 0; i < size; i++){
+        let position = Math.floor(Math.random()*size);
+        console.log(array[position], array[i]);
+        let temp = array[i];
+        array[i] = array[position];
+        array[position] = temp;
+    }
+     return
+}
 Traversal(Row,Col);
 
 
