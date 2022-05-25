@@ -37,11 +37,12 @@ const Vert = Array(CELLS)
             .fill()
             .map(()=>Array(CELLS-1).fill(false));
             console.log(Vert)
+console.log(Vert)
 //Horizontals
 const Hori = Array(CELLS-1)
             .fill()
             .map(()=>Array(CELLS).fill(false));
-            console.log(Hori)
+console.log(Hori)
 
 //Random Starting position
 const Row = Math.floor((Math.random())*CELLS);
@@ -57,67 +58,48 @@ const Traversal = (Row,Col) =>{
     grid[Row][Col] = true;
 
     //Random select next spot
-    let Neighbors = [
-        [Row+1,Col],
-        [Row,Col+1],
-        [Row-1,Col],
-        [Row,Col-1],
-    ]
-    let Neighbors2 = Shuffle_2([
-        [Row+1,Col],
-        [Row,Col+1],
-        [Row-1,Col],
-        [Row,Col-1],
+    let Neighbors2 = Shuffle([
+        [Row+1,Col,  'up'],
+        [Row,  Col+1,'right'],
+        [Row-1,Col,  'left'],
+        [Row,  Col-1,'down'],
     ])
     
-    //for each neighbor
+    //for each neighbor 
     for(let neighbor of Neighbors2){
-        const [nextRow, nextColumn] = neighbor;
+        const [nextRow,nextColumn,direction] = neighbor;
         
-        if((nextColumn<0 || nextColumn >= CELLS) ||(nextRow<0     || nextColumn >= CELLS)){
+        //Check for outofbounds
+        if((nextColumn<0 || nextColumn >= CELLS) ||(nextRow<0     || nextRow >= CELLS))
             continue;
-        }
+        //Check if visited
+        if(grid[nextRow][nextColumn])
+            continue;
 
-
+        //Updating Verticals
+        if(direction === 'left')
+            Vert[Row][Col-1] =true;
+        else if(direction === 'right')
+            Vert[Row][Col] = true;
+        else if(direction === 'up')
+            Hori[Row-1][Col] = true;
+        else (direction === 'down')
+            Hori[Row][Col] = true;    
     }
-
+    Traversal(nextRow,nextColumn);
 };
 
 const Shuffle = (array)=>{
     let size = array.length;
     for(let i = 0; i < size; i++){
         let position = Math.floor(Math.random()*size);
-        console.log(array[position], array[i]);
         let temp = array[i];
         array[i] = array[position];
         array[position] = temp;
-    }
-     console.log(array);
-}
-const Shuffle_2 = (array) =>{
-    let counter = array.length;
-
-    while(counter >0){
-        const index = Math.floor(Math.random() * counter);
-        counter--;
-
-        let temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
     }
     return array;
 }
-Array.prototype.shuff =  (array)=>{
-    let size = array.length;
-    for(let i = 0; i < size; i++){
-        let position = Math.floor(Math.random()*size);
-        console.log(array[position], array[i]);
-        let temp = array[i];
-        array[i] = array[position];
-        array[position] = temp;
-    }
-     return
-}
+
 Traversal(Row,Col);
 
 
