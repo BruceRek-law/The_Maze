@@ -1,9 +1,10 @@
-
 const {Engine, World, Render, Bodies,Runner} = Matter;
 const CELLS =3;
 //World's Dimesions
-const Width   =700;
-const Height  =700;
+const Width   =600;
+const Height  =600;
+
+const unitLength = Height/CELLS;
 const engine  = Engine.create();
 const {world} = engine;
 const render  = Render.create({
@@ -59,7 +60,6 @@ const Hori  = Array(CELLS-1)
             .fill(null)
             .map(()=>Array(CELLS).fill(false));
 //console.log(Hori)
-
 //Random Starting position
 const startRow = Math.floor((Math.random())*CELLS);
 const startCol = Math.floor((Math.random())*CELLS);
@@ -102,9 +102,27 @@ const Traversal = (Row,Col) =>{
             Hori[Row][Col] = true;    
         
         Traversal(nextRow,nextColumn);
-    }
-    
+    }  
 };
 
 Traversal(startRow,startCol);
+
+Hori.forEach((row,columnIndex) =>{
+    row.forEach((open,rowIndex) =>{
+        if(open)
+            return;
+        
+        const wall = Bodies.rectangle(
+            columnIndex*unitLength+(unitLength/2),
+            row*unitLength+unitLength,
+            unitLength,
+            1,
+            {
+                isStatic: true
+            }
+        );
+
+        World.add(world,wall);
+    })
+})
    
